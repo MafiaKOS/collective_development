@@ -12,6 +12,7 @@ from django.db import models
 class Post ( models.Model ):
 
 	image_url = models.CharField( max_length=200 )
+	post_url = models.CharField( max_length=200 )
 	renew = models.DateTimeField( 'date of renewal' )
 
 

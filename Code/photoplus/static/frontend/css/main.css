@@ -99,6 +99,9 @@ img.shadow {
 #contact {
 	width: 100%;
 }
+#description {
+	margin-bottom: 80px;
+}
 .credit {
 	margin: 20px 0;
 }
@@ -146,4 +149,7 @@ img.shadow {
 }
 .photo-date {
 	float: right;
+}
+ul.nav li.dropdown:hover > ul.dropdown-menu{
+    display: block;    
 }

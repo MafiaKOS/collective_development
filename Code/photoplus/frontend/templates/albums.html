@@ -1,53 +1,81 @@
-<html>
-<head>
-
-	<link rel="stylesheet" type="text/css" href="/static/css/style.css" /> 
-</head>
-
-<body>
-	<div id = "wrapper">
-
-		<div id = "header">
-			<div id = "logo">
-				<img src = "/static/images/a.png" width = "115px" height = "65px">
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel='icon' href="/static/frontend/img/pcam-ico.png" type='image/x-icon'>
+		<title>Vashchenko.com</title>
+		<link type="text/css" href="/static/frontend/css/main.css" rel="stylesheet">
+		<link media="screen" href="/static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="navbar">
+                <div class="navbar-inner">
+                   <a class="brand" title="Vashchenko photo bucket" href="/"><img src="/static/frontend/img/logo.png" /></a>
+                   
+                   <ul class="nav">
+                        <div class="span1"></div>
+                        <li><a href="/">HOME</a></li>
+                        <li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GALLERY</a>
+                        	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+									<li>
+										<a tabindex="-1" href="/albums/">PEOPLE</a>
+									</li>
+									<li>
+										<a tabindex="-1" href="/albums/">CITY</a>
+									</li>
+									<li>
+										<a tabindex="-1" href="/albums/">NATURE</a>
+									</li>
+							</ul>
+                        </li>
+                        <li><a href="/about/">ABOUT</a></li>
+                   </ul>
+                </div>
+            </div>
+            
+			<div id="content" class="content">
+				<h3 class="category">GALLERY : CITY</h3>
+			    <div class="photos">
+			    	<div class="photo">
+			    		<a href="photo.html">
+			    		<img class="shadow" src="/static/frontend/img/fulmini_oneglia_by_raffaele_dn-wallpaper-1600x900.jpg" />
+			    		</a>
+			    		<h4 class="photo-name">Oneglia</h4> 
+			    		<h5 class="photo-date">30.05.2012</h5>
+			    	</div>
+			    	<div class="photo">
+			    		<img class="shadow" src="/static/frontend/img/peaks_in_himalaya-wallpaper-1600x900.jpg" />
+			    		<h4 class="photo-name">Himalaya</h4> 
+			    		<h5 class="photo-date">30.05.2012</h5>
+			    	</div>
+			    	<div class="photo">
+			    		<img class="shadow" src="/static/frontend/img/new_zealand_mountains-wallpaper-1600x900.jpg" />
+			    		<h4 class="photo-name">New Zealand</h4> 
+			    		<h5 class="photo-date">30.05.2012</h5>
+			    	</div>
+			    </div>
+			    <div class="pagination pagination-centered">
+			    	<ul>
+						<li><a href="#">1</a></li>
+						<li class="disabled"><a>...</a></li>
+						<li><a href="#">11</a></li>
+						<li class="active"><a href="#">12</a></li>
+						<li><a href="#">13</a></li>
+						<li class="disabled"><a>...</a></li>
+						<li><a href="#">27</a></li>
+					</ul>
+			    </div>
 			</div>
-
-			<div id = "menu">
-				<a href = "/">
-					<div class = "menu_item">
-						<img src = "/static/images/home.gif"  height = "50px">
-						<p>Home</p>
-					</div>
-				</a>
-
-				<a href = "/albums/">
-					<div class = "menu_item">
-						<img src = "/static/images/albums.jpg" height = "50px">
-						<p>Albums</p>
-					</div>
-				</a>
-
-				<a href = "/about/">
-					<div class = "menu_item">
-						<img src = "/static/images/about.gif" height = "50px"> 
-						<p>About me</p>
-					</div>
-				</a>
+			
+			<div id="blank-footer">
+			</div>
+			<div id="footer">
+				<hr />
+				<span class="muted">Yuri Vashchenko. All rights reserved</span>
 			</div>
 		</div>
-
-		<th>
-		
-		<div id = "content">
-<h1>albums here</h1>
-		</div>
-	
-	</div>
-
-	<div id = "footer">
-			<p>2013 &copy Copyright.   All rights reserved.</p>
-	</div>
-
-</body>
-
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="/static/frontend/css/bootstrap/js/bootstrap.min.js"></script>
+	</body>
 </html>
