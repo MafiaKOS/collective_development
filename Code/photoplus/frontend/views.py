@@ -53,29 +53,34 @@ def api_data_extraction():
                          'v1', 
     developerKey =       'AIzaSyAKCO6eEQHQLN32ZARi2TOoJXVP88EZW4c')
     activities_resource = service.activities()
-    request = activities_resource.list(
+    request = 		  activities_resource.list(
     userId =             '100915540970866628562',                                               #'103582189468795743999',
     collection =         'public',
     maxResults =         '100' )
 
+    
     act_list = []
     activities_document = request.execute()
     if 'items' in activities_document:                                                          # if account is not empty
+
         for activity in activities_document['items']:                                           # taking every activity
+        
+
             if 'actor' not in activity['object']:                                               # if activity is not reshared
                 if 'attachments' in activity['object']:                                         # if activity has attachments
                     if activity['object']['attachments'][0]['objectType'] == "photo":           # if activity type is photo
-
+			
                         act_struct = []                                                         # [ url , [ #1_ht , #2_ht , ... ] ]
+
                         act_struct.append( activity['object']['attachments'][0]['fullImage']['url'] ) 
                         act_struct.append( activity['updated'] )
                         act_struct.append( get_tags_list( activity['object']['content'] ) )
+			act_struct.append(activity['actor']['image']['url'] )
+    		
 
                         act_list.append( act_struct )
+			
     return act_list
-
-
-
 
 
 def refresh_db_with_new_data( ):
@@ -189,5 +194,28 @@ def contact(request):
 
 def thanks(request):
     return render_to_response('thanks.html')
+
+
+
+def api_avatar_extraction():
+    
+    service = build(     'plus',
+                         'v1', 
+    developerKey =       'AIzaSyAKCO6eEQHQLN32ZARi2TOoJXVP88EZW4c')
+    activities_resource = service.activities()
+    request = 		  activities_resource.list(
+    userId =             '100915540970866628562',                                               #'103582189468795743999',
+    collection =         'public',
+    maxResults =         '100' )
+
+    
+    act_photo_author = []
+    activities_document = request.execute()
+    if 'items' in activities_document:                                                          # if account is not empty
+
+        for activity in activities_document['items']:                                           # taking every activity
+	    act_photo_author.append(activity['actor']['image']['url'] )
+    		
+    return act_photo_author
 
 

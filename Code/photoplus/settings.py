@@ -4,7 +4,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
- ('interbellum', '1@gmail.com'),
+ ('kovalenko', 'kovalenko.stasiya@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -55,7 +55,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-#    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
@@ -84,6 +84,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     #'django.contrib.admindocs',
     'frontend',
+    'captcha',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -116,9 +117,16 @@ LOGGING = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = '@gmail.com'
+DEFAULT_FROM_EMAIL = 'kovalenko.stasiya@gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '@gmail.com'
-EMAIL_HOST_PASSWORD = 'password'
+EMAIL_HOST_USER = 'kovalenko.stasiya@gmail.com'
+EMAIL_HOST_PASSWORD = 'PASSWORD'
 EMAIL_PORT = 587
+
+#EMAIL_HOST = 'localhost'
+#EMAIL_PORT = '1025'
+#EMAIL_HOST_USER = ''
+#EMAIL_HOST_PASSWORD = ''
+#EMAIL_USE_TLS = True
+

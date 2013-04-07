@@ -35,6 +35,14 @@
 	   {% endif %}
             {{ form.message }}
         </div>
+	<div class="field">
+	   {% if form.captcha.errors %}
+          	 <label style="color: red;" , for="id_email">Code in the image:</label>
+ 	   {% else %}
+		 <label style="color: black;" , for="id_email">Code in the image:</label>
+	   {% endif %}
+            {{ form.captcha }} 
+	</div>
   </fieldset>
         <input type="submit" value="Submit">
     </form>
