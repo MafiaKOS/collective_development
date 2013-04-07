@@ -1,46 +1,125 @@
-<!DOCTYPE html>
-<html lang="ru">
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
-        <meta charset="utf-8">
-		<link rel='icon' href="static/frontend/img/i.png" type='image/x-icon'> 
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel='icon' href="/static/frontend/img/pcam-ico.png" type='image/x-icon'>
 		<title>Vashchenko.com</title>
-			<!-- Bootstrap -->
-		<link href="static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" >
-		<link href="static/frontend/css/style.css" rel="stylesheet" type="text/css" >
+		<link type="text/css" href="/static/frontend/css/main.css" rel="stylesheet">
+		<link media="screen" href="/static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet">
 	</head>
-
-
 	<body>
 		<div class="container">
-            
-            <!--  -->
-			<div class="span12">
-                <div class="navbar ">
-                    <div class="navbar-inner ">
-                       <a class="brand" href="#"> Vashchenko </a>
-                       
-                       <ul class="nav">
-                            <div class="span2"></div>
-                            <li class="active"><a href="#"> Home </a></li>
-                            <li><a href="#"> Albums </a></li>
-                            <li><a href="http://loc.vashchenko.com/about"> About me</a></li>
-                       </ul>
-                    </div>
+			<div class="navbar">
+				<div class="navbar-inner">
+					<a class="brand" title="Vashchenko photo bucket" href="/"><img src="/static/frontend/img/logo.png" /></a>
+					
+					<ul class="nav">
+						<div class="span1"></div>
+						<li class="active"><a href="/">HOME</a></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GALLERY</a>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+									<li>
+										<a tabindex="-1" href="/albums/">PEOPLE</a>
+									</li>
+									<li>
+										<a tabindex="-1" href="/albums/">CITY</a>
+									</li>
+									<li>
+										<a tabindex="-1" href="/albums/">NATURE</a>
+									</li>
+							</ul>
+                        </li>
+                        <li><a href="/about/">ABOUT</a></li>
+                   </ul>
                 </div>
-                
-                <hr>
-                
-                <h1 id="center" class = "muted">Welcome to VASHCHENKO.COM </h1>
-                
-                <h1> Home </h1>
-                {% for e in lst %}
-                    <img src="{{ e.image_url }}">
-                    <p> {{ e.tag_set.all }} </p>
-                {% endfor %}  
-                <hr>
+            </div>
+            
+			<div id="content">
+				{% if best %}
+				<h3 class="category">BEST</h3>
+				<div id="BestPhotos" class="carousel slide">
+					<ol class="carousel-indicators">
+						<li data-target="#BestPhotos" data-slide-to="0" class="active"></li>
+						<li data-target="#BestPhotos" data-slide-to="1"></li>
+						<li data-target="#BestPhotos" data-slide-to="2"></li>
+					</ol>
+					<!-- Carousel items -->
+					<div class="carousel-inner">
+						<div class="active item"><img class="shadow" src="/static/frontend/img/fulmini_oneglia_by_raffaele_dn-wallpaper-1600x900.jpg" /></div>
+						<div class="item"><img class="shadow" src="/static/frontend/img/peaks_in_himalaya-wallpaper-1600x900.jpg" /></div>
+						<div class="item"><img class="shadow" src="/static/frontend/img/new_zealand_mountains-wallpaper-1600x900.jpg" /></div>
+					</div>
+					<!-- Carousel nav -->
+					<a class="carousel-control left" href="#BestPhotos" data-slide="prev">&lsaquo;</a>
+					<a class="carousel-control right" href="#BestPhotos" data-slide="next">&rsaquo;</a>
+				</div>
+				<hr />
+				{% endif %}
+				<h3 class="category">LAST PHOTO {% if last %}({{ nf }} to {{ nl }}) {% endif %}</h3>
+				{% if last %}
+				<div class="photos">
+					{% for e in last %}
+			    	<div class="photo">
+			    		<a href="/photo/{{ e.id }}">
+			    		<img class="shadow" src="{{ e.image_url }}" />
+			    		</a>
+			    		<h4 class="photo-name">{{ e.id }}</h4> 
+			    		<h5 class="photo-date">{{ e.renew }}</h5>
+			    	</div>
+					{% endfor %}
+			    </div>
+				{% else %}
+					<h5 class="category">There is no photo!</h5>
+				{% endif %}
+				<div class="stop-div"></div>
+			    <div class="pagination pagination-centered">
+			    	<ul>
+						{% if paginator.has_previous %}
+						<li><a href="/page/{{ paginator.previous }}/">&lt; Prev</a></li>
+						{% else %}
+						<li class="disabled"><a>&lt; Prev</a></li>
+						{% endif %}
+						{% if paginator.show_first %}
+						<li><a href="/page/1/">1</a></li>
+						<li class="disabled"><a>...</a></li>
+						{% endif %}
+						{% for linkpage in paginator.page_numbers %}
+                            {% ifequal linkpage paginator.page %}
+							<li class="active"><a>{{ paginator.page }}</a></li>
+							{% else %}
+							<li><a href="/page/{{ linkpage }}/">{{ linkpage }}</a></li>
+							{% endifequal %}
+						{% endfor %}
+						{% if paginator.show_last %}
+                        <li class="disabled"><a>...</a></li>
+						<li><a href="/page/{{ paginator.pages }}/">{{ paginator.pages }}</a></li>
+                        {% endif %}
+						{% if paginator.has_next %}
+						<li><a href="/page/{{ paginator.next }}/">Next &gt;</a></li>
+						{% else %}
+						<li class="disabled"><a>Next &gt;</a></li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+			
+			<div id="blank-footer">
+			</div>
+			<div id="footer">
+				<hr />
+				<span class="muted">Yuri Vashchenko. All rights reserved</span>
 			</div>
 		</div>
+		<script>
+			$('.nav').children('.dropdown').hover(
+			function(){
+			$(this).addClass('open');
+			},
+			function(){
+			$(this).removeClass('open');
+			});
+		</script>
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src="bootstrap/js/bootstrap.min.js"></script>
+		<script src="/static/frontend/css/bootstrap/js/bootstrap.js"></script>
 	</body>
 </html>
