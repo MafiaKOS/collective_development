@@ -10,10 +10,6 @@ from apiclient.discovery import build
 from frontend.models     import *
 from sys                 import *
 from math                import *
-from django.core.mail 	 import send_mail
-from django.template  	 import RequestContext
-from django.http 	 import HttpResponseRedirect
-from frontend.forms  	 import ReCaptchaForm
 
 
 
@@ -71,7 +67,17 @@ def get_tags_list( hashstring ):
     return tags_list
 
 
-
+def strip_title( text ):
+    if ( text.startswith("<b>") != True ):
+        return ""
+    pos = text.find("</b>")
+    if (pos == -1):
+        return ""
+    title = text[3:pos]
+    
+    if ( (">" in title) or ("<" in title) or (len(title) > 30 ) ):
+        return ""
+    return title
 
 
 # Extracting data from 
@@ -106,7 +112,8 @@ def api_data_extraction():
                         act_struct.append( activity['updated'] )
                         act_struct.append( get_tags_list( activity['object']['content'] ) )
                         act_struct.append( activity['url'] )
-
+                        act_struct.append( strip_title( activity['object']['content'][:40] ) )
+                        
                         act_list.append( act_struct )
     return act_list
 
@@ -124,7 +131,7 @@ def refresh_db_with_new_data( ):
     
     for element in new_data:
         if element[0] not in posts_list:
-            p = Post( image_url = element[0] , renew = element[1] , post_url = element[3] )
+            p = Post( image_url = element[0] , renew = element[1] , post_url = element[3] , post_title = element[4])
             p.save()
         else:
             p = Post.objects.get( image_url = element[0] )
@@ -165,9 +172,7 @@ def albums( request ):
 
     return render_to_response('albums.html')
 
-def feedback( request ):
 
-    return render_to_response('feedback.html')
 
 
 
@@ -231,36 +236,4 @@ def buy( request, id_get, resolution ):
         raise Http404
     
     return render_to_response('buy.html',{ 'photo':p, 'res':resolution })
-
-
-def search_form(request):
-
-    return render_to_response('search_form.html')
-
-
-
-def contact(request):
-
-    form = ReCaptchaForm()
-    if request.POST:
-        form = ReCaptchaForm(request.POST)
-        if form.is_valid():
-            cd = form.cleaned_data
-            send_mail(
-                cd['subject'],
-                cd['message'],
-                cd.get('email', 'kovalenko.stasiya@gmail.com'), ['kovalenishe@mail.ru'], fail_silently=False
-           	     )
-
-	#	send_mail('subjectsubjectsubject','me message message message message', 'lexalexa-setset@mail.ru', 'kovalenko.stasiya@gmail.com'),
-
-            return HttpResponseRedirect('/about/')
-    else:
-        form = ReCaptchaForm( # initial={'subject': 'I love your site!'}
-			     )
-    return render_to_response('contact.html', {'form': form}, context_instance=RequestContext(request))
-
-def thanks(request):
-    return render_to_response('thanks.html')
-
 

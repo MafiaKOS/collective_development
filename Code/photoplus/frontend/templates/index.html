@@ -36,7 +36,6 @@
             
 			<div id="content">
 				{% if best %}
-				<h3 class="category">BEST</h3>
 				<div id="BestPhotos" class="carousel slide">
 					<ol class="carousel-indicators">
 						<li data-target="#BestPhotos" data-slide-to="0" class="active"></li>
@@ -55,7 +54,7 @@
 				</div>
 				<hr />
 				{% endif %}
-				<h3 class="category">LAST PHOTO {% if last %}({{ nf }} to {{ nl }}) {% endif %}</h3>
+				<h3 class="category">GALLERY: ALL {% if last %}({{ nf }} to {{ nl }}) {% endif %}</h3>
 				{% if last %}
 				<div class="photos">
 					{% for e in last %}
@@ -63,8 +62,8 @@
 			    		<a href="/photo/{{ e.id }}">
 			    		<img class="shadow" src="{{ e.image_url }}" />
 			    		</a>
-			    		<h4 class="photo-name">{{ e.id }}</h4> 
-			    		<h5 class="photo-date">{{ e.renew }}</h5>
+			    		<a href="{{ e.post_url }}"><h4 class="photo-name">{{ e.post_title }}</h4> 
+			    		<h5 class="photo-date">{{ e.renew }}</h5></a>
 			    	</div>
 					{% endfor %}
 			    </div>

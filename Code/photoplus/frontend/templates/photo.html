@@ -38,18 +38,19 @@
 			    <table id="table-photo">
 					<thead>
 						<tr>
-							<th class="text-shadow text-left v22">{{ photo.id }}</th>
+							<th class="text-shadow text-left v22">{{ photo.post_title }}</th>
 							<th class="text-shadow text-right v22">{{ photo.renew }}</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
-							<td id="photo-text">Здесь описание или теги</td>
-							<td id="photo-img"><a href="{{ photo.post_url }}"><img src="{{ photo.image_url }}" /></a></td>
+							<td id="photo-img" colspan=2>
+								<a href="{{ photo.post_url }}"><img title="CLICK TO GO TO POST PAGE" src="{{ photo.image_url }}" /></a>
+							</td>
 						</tr>
 						<tr>
 							<td></td>
-							<td id="photo-comment" class="text-right muted v7">LEAVE A COMMENT:  <a href="{{ photo.post_url }}">{{ photo.post_url }}</a></td>
+							<td id="photo-comment" class="text-right muted v7"><a href="{{ photo.post_url }}">CLICK HERE TO LEAVE COMMENT</a></td>
 						</tr>
 						<tr>
 							<td id="photo-price">
