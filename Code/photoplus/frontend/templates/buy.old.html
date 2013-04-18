@@ -31,20 +31,18 @@
         {% endfor %}
     </ul>
     </li>
-                            <li class="active"><a href="#"> About me</a></li>
-
+                            <li><a href="/about"> About me</a></li>
                        </ul>
                     </div>
                 </div>
                 
-                <h1> Feedback </h1>
-            
-                <form action="/about/feedback/" method="post">{% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" value="Submit" />
-                </form>
+
+                <h1> buy </h1>
+                <img src="{{ var.image_url }}" width="450px" height="300px">
+                <p> here will be the form to complete</p>
 
 
+                <hr>
 			</div>
 		</div>
         <script src="http://code.jquery.com/jquery-latest.js"></script>

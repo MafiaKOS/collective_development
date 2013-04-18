@@ -1,24 +1,282 @@
 # coding=UTF-8
 
-
+from django.core.mail    import send_mail
 from django.http         import Http404
-from django.shortcuts    import render_to_response
+from django.shortcuts    import render_to_response,render
 from django.template     import Context, loader
-from django.http         import HttpResponse
+from django.http         import HttpResponse,HttpResponseRedirect
 
 from apiclient.discovery import build
 from frontend.models     import *
 from sys                 import *
 from math                import *
 
+from django              import forms
 
 
-
+#========================================================================================================
+#                                       PARSING HERE
+#========================================================================================================
 # Parsing tag info 
 
 # in : string with hashtags
 # out: list of tags( strings )
 
+def get_tags_list( hashstring ):
+
+    hashstring = hashstring.replace("&#","")
+    tags_list = []
+    for e in range( 0,hashstring.count("ot-hashtag") ):
+        r = hashstring.find('#')+1
+        hashstring = hashstring[r:]
+        t = hashstring.find('<')
+        tags_list.append( hashstring[:t] )
+    return tags_list
+
+
+def get_avatar():
+    service = build(     'plus',
+                         'v1', 
+    developerKey =       'AIzaSyAKCO6eEQHQLN32ZARi2TOoJXVP88EZW4c')
+    people_resource = service.people()
+    request = people_resource.get(userId ='100915540970866628562').execute()
+    return request['image']['url']
+
+
+# Extracting data from 
+# personal account of Yuri Vashchenko
+
+# in : ---
+# out: list of structures like ---> [ url , [ #1_ht , #2_ht , ..
+
+# ! Important: single use of this function spend 1 / 10.000 of API request !
+
+def api_data_extraction():
+    
+    service = build(     'plus',
+                         'v1', 
+    developerKey =       'AIzaSyAKCO6eEQHQLN32ZARi2TOoJXVP88EZW4c')
+    activities_resource = service.activities()
+    request = activities_resource.list(
+    userId =             '100915540970866628562',                                               #'103582189468795743999',
+    collection =         'public',
+    maxResults =         '100' )
+
+    act_list = []
+    activities_document = request.execute()
+    if 'items' in activities_document:  
+        for activity in activities_document['items']:                                           # taking every activity
+            if 'actor' not in activity['object']:                                               # if activity is not reshared
+                if 'attachments' in activity['object']:                                         # if activity has attachments
+                    if activity['object']['attachments'][0]['objectType'] == "photo":           # if activity type is photo
+
+                        act_struct = []                                                         # [ url , [ #1_ht , #2_ht , ... ] ]
+                        act_struct.append( activity['object']['attachments'][0]['fullImage']['url'] ) 
+                        act_struct.append( activity['updated'] )
+                        act_struct.append( activity['url'] )
+                        act_struct.append( strip_title( activity['object']['content'][:40] ) )
+                        act_struct.append( get_tags_list( activity['object']['content'] ) )
+                        
+                        act_list.append( act_struct )
+
+    return act_list
+
+
+def refresh_db_with_new_data( ):
+    
+    new_data = api_data_extraction()
+    posts_list = []
+    
+    for el in Post.objects.all():
+        posts_list.append( el.image_url )
+    
+    for element in new_data:
+        if element[0] not in posts_list:
+            p = Post( image_url = element[0] , renew = element[1] , post_url = element[2] , post_title = element[3] )
+            p.save()
+        else:
+            p = Post.objects.get( image_url = element[0] )
+    
+        if len(element) == 5:
+            tags_list = []
+            for el in Tag.objects.all():
+                tags_list.append( el.name )
+            for tag in element[4]:
+                if tag not in tags_list:
+                    t = Tag ( name = tag )
+                    t.save()
+                    t.posts.add(p)
+                    t.save()
+                else:
+                    t = Tag.objects.filter( name = tag )[0]
+                    t.posts.add(p)
+                    t.save()
+    return
+
+
+
+#========================================================================================================
+#                                       PARSING HERE
+#========================================================================================================
+
+
+#                                          ALBUMS
+#--------------------------------------------------------------------------------------------------
+# def albums( request ):
+#     try:
+#         al = Album.objects.all()
+#     except Post.DoesNotExist:
+#         raise Http404
+#     return render_to_response('albums.html',{'alb':al})
+
+
+
+#                                           HOME
+#--------------------------------------------------------------------------------------------------
+def home( request ):
+    refresh_db_with_new_data()
+    try:
+        last = Post.objects.order_by('-renew')[0:10]
+        al = Album.objects.all()
+    except Post.DoesNotExist:
+        raise Http404
+    
+    page = 1
+    pages = int(ceil(Post.objects.count() / 10.0))
+    paginator = get_paginator_data( page, pages , 2 )
+    num_last = len(last)
+    
+    return render_to_response('index.html',{ 'last':last, 'best':last[:3], 'paginator':paginator, 'nl':num_last, 'nf':1, 'album_list':al })
+
+def home_page( request, page ):
+    
+    page = int(page)
+    num_last = 10 * page
+    num_first = 10 * (page - 1)
+    
+    try:
+        last = Post.objects.order_by('-renew')[num_first:num_last]
+        al = Album.objects.all()
+    except Post.DoesNotExist:
+        raise Http404
+    
+    num_first = num_first + 1
+    num_last = num_first + len(last) - 1
+    
+    pages = int(ceil(Post.objects.count() / 10.0))
+    paginator = get_paginator_data( page, pages , 2 )
+    
+    return render_to_response('index.html',{ 'last':last, 'paginator':paginator, 'nl':num_last, 'nf':num_first, 'album_list':al })
+
+#                                          ABOUT
+#--------------------------------------------------------------------------------------------------
+def about(request):
+    try:
+        a = Author.objects.get(id=1)
+        al = Album.objects.all()
+        avatar = '' + get_avatar()
+        avatar = avatar[:avatar.find('?')]
+    except Post.DoesNotExist:
+        raise Http404
+    return render_to_response('about.html',{ 'about':a , 'album_list':al, 'avatar':avatar })
+
+
+#                                          FEEDBACK
+#--------------------------------------------------------------------------------------------------
+def feedback(request):
+    al = Album.objects.all()
+    if request.method == 'POST':                # If the form has been submitted...
+        form = ContactForm(request.POST)        # A form bound to the POST data
+        if form.is_valid():                     # All validation rules pass        
+            # send_mail(
+            #     '' + form['subject'].value(), # 'Subject here',
+            #     '' + form['message'].value(), # 'Here is the message.', 
+            #     '' + form['sender'].value(),  # Here is the clients email
+            #     ['forzalino@gmail.com'], 
+            #     fail_silently=False
+            #     )
+            return HttpResponseRedirect('/about') # Redirect after POST
+    else:
+        form = ContactForm() # An unbound form
+
+    return render(request, 'feedback.html', {
+        'form': form, 'album_list':al
+    })
+
+class ContactForm(forms.Form):
+    subject = forms.CharField(max_length=100)
+    message = forms.CharField()
+    sender = forms.EmailField()
+
+
+
+#                                            BUY
+#--------------------------------------------------------------------------------------------------
+def buy(request, idA = "default_album", idP = "default_photo", resolution = "20x15" ):
+    if (Price.objects.filter( size = resolution ).count() == 0):
+        raise Http404
+    try:
+        idP = int(idP)
+        p = Post.objects.get( id = idP )
+        al = Album.objects.all()
+    except Post.DoesNotExist:
+        raise Http404
+    return render_to_response('buy.html',{ 'var':p , 'album_list':al })
+
+
+#                                          PREVIEW
+#--------------------------------------------------------------------------------------------------
+def preview(request, idA = "All", idP = "default_photo" ):
+    try:
+        album = Album.objects.get( name = idA)
+        idP = int(idP)
+        photo = Post.objects.get( id = idP )
+        al = Album.objects.all()
+        prices = Price.objects.all()
+    except Post.DoesNotExist:
+        raise Http404
+    return render_to_response('preview.html',{ 'photo':photo , 'album':album, 'album_list':al, 'prices':prices })
+
+
+#                                       DESCRIBE_ALBUM
+#--------------------------------------------------------------------------------------------------
+def album( request , idA = "default", page = 1):
+    
+    page = int(page)
+    
+    if (page < 1):
+        raise Http404
+    try:
+        album = Album.objects.get( name = idA)
+        al = Album.objects.all()
+
+        photos = []
+        for tag in album.tags.all():
+            posts = tag.posts.all()
+            for post in posts:
+                if post not in photos:
+                    photos.append(post)
+    except Album.DoesNotExist:
+        raise Http404
+#    photos.sort(key=lambda post: post['id'])
+    
+    num_last = 10 * page
+    num_first = 10 * (page - 1)
+    
+    pages = int(ceil(len(photos) / 10.0))
+    paginator = get_paginator_data( page, pages , 2 )
+    photos = photos[num_first:num_last]
+    
+    num_first = num_first + 1
+    num_last = num_first + len(photos) - 1
+    
+    return render_to_response('albums.html',{'photos':photos, 'album':album , 'album_list':al, 'paginator':paginator, 'nl':num_last, 'nf':num_first})
+
+#--------------------------------------------------------------------------------------------------
+
+
+#                                      GET_PAGINATOR_DATA
+#--------------------------------------------------------------------------------------------------
 def get_paginator_data( page, pages, adjacent_pages=2 ):
     startPage = max(page - adjacent_pages, 1)
     if startPage <= 3: startPage = 1
@@ -54,19 +312,8 @@ def get_paginator_data( page, pages, adjacent_pages=2 ):
         'show_first': 1 not in page_numbers,
         'show_last': pages not in page_numbers,
     }
-
-def get_tags_list( hashstring ):
-
-    hashstring = hashstring.replace("&#","")
-    tags_list = []
-    for e in range( 0,hashstring.count("ot-hashtag") ):
-        r = hashstring.find('#')+1
-        hashstring = hashstring[r:]
-        t = hashstring.find('<')
-        tags_list.append( hashstring[:t] )
-    return tags_list
-
-
+#                                        STRIP_TITLE
+#--------------------------------------------------------------------------------------------------
 def strip_title( text ):
     if ( text.startswith("<b>") != True ):
         return ""
@@ -80,160 +327,7 @@ def strip_title( text ):
     return title
 
 
-# Extracting data from 
-# personal account of Yuri Vashchenko
-
-# in : ---
-# out: list of structures like ---> [ url , [ #1_ht , #2_ht , ..
-
-# ! Important: single use of this function spares 1 / 10.000 of API request !
-
-def api_data_extraction():
-    
-    service = build(     'plus',
-                         'v1', 
-    developerKey =       'AIzaSyAKCO6eEQHQLN32ZARi2TOoJXVP88EZW4c')
-    activities_resource = service.activities()
-    request = activities_resource.list(
-    userId =             '100915540970866628562',                                               #'103582189468795743999',
-    collection =         'public',
-    maxResults =         '100' )
-    
-    act_list = []
-    activities_document = request.execute()
-    if 'items' in activities_document:                                                          # if account is not empty
-        for activity in activities_document['items']:                                           # taking every activity
-            if 'actor' not in activity['object']:                                               # if activity is not reshared
-                if 'attachments' in activity['object']:                                         # if activity has attachments
-                    if activity['object']['attachments'][0]['objectType'] == "photo":           # if activity type is photo
-    
-                        act_struct = []                                                         # [ url , [ #1_ht , #2_ht , ... ] ]
-                        act_struct.append( activity['object']['attachments'][0]['fullImage']['url'] ) 
-                        act_struct.append( activity['updated'] )
-                        act_struct.append( get_tags_list( activity['object']['content'] ) )
-                        act_struct.append( activity['url'] )
-                        act_struct.append( strip_title( activity['object']['content'][:40] ) )
-                        
-                        act_list.append( act_struct )
-    return act_list
 
 
 
-
-
-def refresh_db_with_new_data( ):
-    
-    new_data = api_data_extraction()
-    
-    posts_list = []
-    for el in Post.objects.all():
-        posts_list.append( el.image_url )
-    
-    for element in new_data:
-        if element[0] not in posts_list:
-            p = Post( image_url = element[0] , renew = element[1] , post_url = element[3] , post_title = element[4])
-            p.save()
-        else:
-            p = Post.objects.get( image_url = element[0] )
-    
-        if len(element) == 3:
-            tags_list = []
-            for el in Tag.objects.all():
-                tags_list.append( el.name )
-            for tag in element[2]:
-                if tag not in tags_list:
-                    t = Tag ( name = tag )
-                    t.save()
-                    t.posts.add(p)
-                    t.save()
-                else:
-                    t = Tag.objects.filter( name = tag )[0]
-                    t.posts.add(p)
-                    t.save()
-    return
-
-
-
-
-
-def clear_db( ):
-
-    p = Post.objects.all()
-    t = Tag.objects.all()
-    p.clear()
-    t.clear()
-    return
-
-
-
-
-
-def albums( request ):
-
-    return render_to_response('albums.html')
-
-
-
-
-
-def about( request ):
-
-    return render_to_response('about.html')
-
-
-
-
-
-def home( request ):
-    
-    refresh_db_with_new_data()
-    #clear_db()
-    try:
-        last = Post.objects.order_by('-renew')[0:10]
-    except Post.DoesNotExist:
-        raise Http404
-    
-    page = 1
-    pages = int(ceil(Post.objects.count() / 10.0))
-    paginator = get_paginator_data( page, pages , 2 )
-    num_last = len(last)
-    
-    return render_to_response('index.html',{ 'last':last, 'best':last, 'paginator':paginator, 'nl':num_last, 'nf':1 })
-
-def home_page( request, page ):
-    
-    page = int(page)
-    num_last = 10 * page
-    num_first = 10 * (page - 1)
-    
-    try:
-        last = Post.objects.order_by('-renew')[num_first:num_last]
-    except Post.DoesNotExist:
-        raise Http404
-    
-    num_first = num_first + 1
-    num_last = num_first + len(last) - 1
-    
-    pages = int(ceil(Post.objects.count() / 10.0))
-    paginator = get_paginator_data( page, pages , 2 )
-    
-    return render_to_response('index.html',{ 'last':last, 'paginator':paginator, 'nl':num_last, 'nf':num_first })
-
-def photo( request, id_get ):
-    
-    try:
-        p = Post.objects.get(id=id_get)
-    except Post.DoesNotExist:
-        raise Http404
-    
-    return render_to_response('photo.html',{ 'photo':p })
-
-def buy( request, id_get, resolution ):
-    
-    try:
-        p = Post.objects.get(id=id_get)
-    except Post.DoesNotExist:
-        raise Http404
-    
-    return render_to_response('buy.html',{ 'photo':p, 'res':resolution })
 

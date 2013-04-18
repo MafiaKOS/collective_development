@@ -10,23 +10,19 @@
 	<body>
 		<div class="container">
 			<div class="navbar">
-                <div class="navbar-inner">
-                   <a class="brand" title="Vashchenko photo bucket" href="/"><img src="/static/frontend/img/logo.png" /></a>
-                   
-                   <ul class="nav">
-                        <div class="span1"></div>
-                        <li><a href="/">HOME</a></li>
-                        <li class="dropdown active"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GALLERY</a>
-                        	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+				<div class="navbar-inner">
+					<a class="brand" title="Vashchenko photo bucket" href="/"><img src="/static/frontend/img/logo.png" /></a>
+					
+					<ul class="nav">
+						<div class="span1"></div>
+						<li><a href="/">HOME</a></li>
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GALLERY</a>
+							<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                {% for e in album_list %}
 									<li>
-										<a tabindex="-1" href="/albums/">PEOPLE</a>
+										<a tabindex="-1" href="/albums/{{e.name}}">{{e.name}}</a>
 									</li>
-									<li>
-										<a tabindex="-1" href="/albums/">CITY</a>
-									</li>
-									<li>
-										<a tabindex="-1" href="/albums/">NATURE</a>
-									</li>
+                                {% endfor %}
 							</ul>
                         </li>
                         <li><a href="/about/">ABOUT</a></li>
@@ -34,38 +30,53 @@
                 </div>
             </div>
             
-			<div id="content" class="content">
-				<h3 class="category">GALLERY : CITY</h3>
-			    <div class="photos">
+			<div id="content">
+				<h3 class="category">ALBUM: {{ album.name }} {% if photos %}({{ nf }} to {{ nl }}) {% endif %}</h3>
+				{% if photos %}
+				<div class="photos">
+					{% for e in photos %}
 			    	<div class="photo">
-			    		<a href="photo.html">
-			    		<img class="shadow" src="/static/frontend/img/fulmini_oneglia_by_raffaele_dn-wallpaper-1600x900.jpg" />
+			    		<a href="/preview/{{ e.id }}">
+			    		<img class="shadow" src="{{ e.image_url }}" />
 			    		</a>
-			    		<h4 class="photo-name">Oneglia</h4> 
-			    		<h5 class="photo-date">30.05.2012</h5>
+			    		<a href="{{ e.post_url }}"><h4 class="photo-name">{{ e.post_title }}</h4> 
+			    		<h5 class="photo-date">{{ e.renew }}</h5></a>
 			    	</div>
-			    	<div class="photo">
-			    		<img class="shadow" src="/static/frontend/img/peaks_in_himalaya-wallpaper-1600x900.jpg" />
-			    		<h4 class="photo-name">Himalaya</h4> 
-			    		<h5 class="photo-date">30.05.2012</h5>
-			    	</div>
-			    	<div class="photo">
-			    		<img class="shadow" src="/static/frontend/img/new_zealand_mountains-wallpaper-1600x900.jpg" />
-			    		<h4 class="photo-name">New Zealand</h4> 
-			    		<h5 class="photo-date">30.05.2012</h5>
-			    	</div>
+					{% endfor %}
 			    </div>
+				{% else %}
+					<h5 class="category">There is no photo!</h5>
+				{% endif %}
+				<div class="stop-div"></div>
 			    <div class="pagination pagination-centered">
 			    	<ul>
-						<li><a href="#">1</a></li>
+						{% if paginator.has_previous %}
+						<li><a href="/albums/{{ album.name }}/{{ paginator.previous }}/">&lt; Prev</a></li>
+						{% else %}
+						<li class="disabled"><a>&lt; Prev</a></li>
+						{% endif %}
+						{% if paginator.show_first %}
+						<li><a href="/albums/{{ album.name }}/1/">1</a></li>
 						<li class="disabled"><a>...</a></li>
-						<li><a href="#">11</a></li>
-						<li class="active"><a href="#">12</a></li>
-						<li><a href="#">13</a></li>
-						<li class="disabled"><a>...</a></li>
-						<li><a href="#">27</a></li>
+						{% endif %}
+						{% for linkpage in paginator.page_numbers %}
+                            {% ifequal linkpage paginator.page %}
+							<li class="active"><a>{{ paginator.page }}</a></li>
+							{% else %}
+							<li><a href="/albums/{{ album.name }}/{{ linkpage }}/">{{ linkpage }}</a></li>
+							{% endifequal %}
+						{% endfor %}
+						{% if paginator.show_last %}
+                        <li class="disabled"><a>...</a></li>
+						<li><a href="/albums/{{ album.name }}/{{ paginator.pages }}/">{{ paginator.pages }}</a></li>
+                        {% endif %}
+						{% if paginator.has_next %}
+						<li><a href="/albums/{{ album.name }}/{{ paginator.next }}/">Next &gt;</a></li>
+						{% else %}
+						<li class="disabled"><a>Next &gt;</a></li>
+						{% endif %}
 					</ul>
-			    </div>
+				</div>
 			</div>
 			
 			<div id="blank-footer">
@@ -75,7 +86,16 @@
 				<span class="muted">Yuri Vashchenko. All rights reserved</span>
 			</div>
 		</div>
+		<script>
+			$('.nav').children('.dropdown').hover(
+			function(){
+			$(this).addClass('open');
+			},
+			function(){
+			$(this).removeClass('open');
+			});
+		</script>
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src="/static/frontend/css/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/static/frontend/css/bootstrap/js/bootstrap.js"></script>
 	</body>
 </html>

@@ -25,27 +25,49 @@
                                 {% endfor %}
 							</ul>
                         </li>
-                        <li class="active"><a href="/about/">ABOUT</a></li>
+                        <li><a href="/about/">ABOUT</a></li>
                    </ul>
                 </div>
             </div>
             
 			<div id="content">
-				<div id="description">
-					<img src="{{ avatar }}" class="float-right"/>
-					<h2>About Me</h2>
-					<span>
-						{{ about.information }}
-					</span>
-					<br />
-					<hr />
-					<p> {{ about.email }} </p>
-					<div class="stop-div"></div>
-				</div>
-				<div id="contact">
-					<h4>Contact Me</h4>
-					<a href="/about/feedback/"><h5>LEAVE FEEDBACK</h5></a>
-				</div>
+			    <table id="table-photo">
+					<thead>
+						<tr>
+							<th class="text-shadow text-left v22">{{ photo.post_title }}</th>
+							<th class="text-shadow text-right v22">{{ photo.renew }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td id="photo-img" colspan=2>
+								<a href="{{ photo.post_url }}"><img title="CLICK TO GO TO POST PAGE" src="{{ photo.image_url }}" /></a>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td id="photo-comment" class="text-right muted v7"><a href="{{ photo.post_url }}">CLICK HERE TO LEAVE COMMENT</a></td>
+						</tr>
+						<tr>
+							<td id="photo-price">
+								<form>
+									<table>
+									{% for e in prices %}
+										<tr>
+											<td><input type="radio" name="priceRadios" id="priceRadios{{ forloop.counter }}" value="{{ e.size }}"{% if forloop.first %} checked{% endif %} /></td><td class="span1"></td>
+											<td class="text-right">{{ e.size }}</td><td class="span1"></td>
+											<td class="text-right">{{ e.price }}$</td>
+										</tr>
+									{% endfor %}
+									</table>
+								</form>
+							</td>
+							<td>
+								<button id="buyButton" type="submit" class="btn">Buy photo</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 			
 			<div id="blank-footer"></div>
@@ -54,6 +76,12 @@
 				<span class="muted">Yuri Vashchenko. All rights reserved</span>
 			</div>
 		</div>
+		<script>
+			function buy_try() { 
+				document.location.href = 'http://vashchenko.local/buy/' + {{ photo.id }} + '/' + $('input[name="priceRadios"]:checked').val() + '/';
+			}
+			document.getElementById("buyButton").onclick = buy_try;
+		</script>
 		<script src="http://code.jquery.com/jquery-latest.js"></script>
 		<script src="/static/frontend/css/bootstrap/js/bootstrap.min.js"></script>
 	</body>

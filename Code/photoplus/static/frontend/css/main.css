@@ -134,6 +134,17 @@ img.shadow {
 	-khtml-opacity: 0.95; /* Konqueror 3.1, Safari 1.1 */
 	opacity: 0.95; /* CSS3 - Mozilla 1.7b +, Firefox 0.9 +, Safari 1.2+, Opera 9 */
 }
+#BestPhotos {
+	background-color: black;
+}
+#BestPhotos {
+	background-color: black;
+}
+#BestPhotos .best-photo{
+	display:block;
+	margin: 0 auto;
+	height: 400px;
+}
 .photos {
 	width: 100%;
 }

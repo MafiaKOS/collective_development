@@ -4,7 +4,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
- ('interbellum', '1@gmail.com'),
+ ('interbellum', 'forzalino@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -14,7 +14,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql', 
         'NAME': 'photoplus',            
         'USER': 'root',           
-        'PASSWORD': '1',             
+        'PASSWORD': '123',             
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
         'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
     }
@@ -30,8 +30,15 @@ USE_TZ = True
 
 MEDIA_ROOT = ''
 MEDIA_URL = ''
-STATIC_ROOT = ''
+STATIC_ROOT = '/srv/www/photoplus/staticfiles'
 STATIC_URL = '/static/'
+
+
+
+ADMIN_TOOLS_INDEX_DASHBOARD = 'dashboard.CustomIndexDashboard'
+ADMIN_TOOLS_MENU = 'menu.CustomMenu'
+#ADMIN_TOOLS_THEMING_CSS = 'css/bootstrap.css'
+
 
 STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
@@ -49,13 +56,19 @@ SECRET_KEY = '8*!&amp;md2j8@kl-r_7l=+1ak!gh82wk*qfz7by)qjt)46w-y&amp;o#9'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    'django.template.loaders.eggs.Loader',
 )
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.static',
+    'django.core.context_processors.request',
+    'django.contrib.auth.context_processors.auth',
+    )
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-#    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
@@ -74,15 +87,21 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    'admin_tools',
+    'admin_tools.theming',
+    'admin_tools.menu',
+    'admin_tools.dashboard',
+
+    'django.contrib.admin',
+    'django.contrib.admindocs',
+
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.admin',
-    # Uncomment the next line to enable admin documentation:
-    #'django.contrib.admindocs',
+
     'frontend',
 )
 
@@ -116,9 +135,9 @@ LOGGING = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = '@gmail.com'
+DEFAULT_FROM_EMAIL = 'forzalino@gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = '@gmail.com'
-EMAIL_HOST_PASSWORD = 'password'
+EMAIL_HOST_USER = 'forzalino@gmail.com'
+EMAIL_HOST_PASSWORD = 'interbellum'
 EMAIL_PORT = 587

@@ -21,8 +21,8 @@
                        
                        <ul class="nav">
                             <div class="span2"></div>
-                            <li><a href="/"> Home </a></li>
-    <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Albums</a>
+                            <li class="active"><a href="#"> Home </a></li>
+<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Albums</a>
     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
         {% for e in album_list %}
             <li>
@@ -31,20 +31,16 @@
         {% endfor %}
     </ul>
     </li>
-                            <li class="active"><a href="#"> About me</a></li>
-
+                            <li><a href="/about"> About me</a></li>
                        </ul>
                     </div>
                 </div>
-                
-                <h1> Feedback </h1>
-            
-                <form action="/about/feedback/" method="post">{% csrf_token %}
-                    {{ form.as_p }}
-                    <input type="submit" value="Submit" />
-                </form>
 
-
+                <h1> Home </h1>
+                {% for e in lst %}
+                    <img src="{{ e.image_url }}">
+                    <p> {{ e.tag_set.all }} </p>
+                {% endfor %}  
 			</div>
 		</div>
         <script src="http://code.jquery.com/jquery-latest.js"></script>
