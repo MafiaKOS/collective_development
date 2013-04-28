@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+        <meta charset="utf-8">
+		<link rel='icon' href="/static/frontend/img/i.png" type='image/x-icon'> 
+		<title>Vashchenko.com</title>
+		<link type="text/css" href="/static/frontend/css/main.css" rel="stylesheet">
+		<link href="/static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" >
+		<link href="/static/frontend/css/style.css" rel="stylesheet" type="text/css" >
+	        <title>Contact us</title>
+
+	</head>
+
+<body>
+ 
+  <fieldset>
+ <legend>
+         <h2>photo купить</h2>
+ </legend>
+
+   <p> {{ buy.message}} </p>
+
+    <form action="" method="post">
+        <div class="field">
+            {% if form.FirstName.errors %}
+            	<label style="color: red;">First Name</label>	  
+	   {% else %}
+		<label style="color: black;">First Name</label> 	
+	   {% endif %}
+            {{ form.FirstName }}
+        </div>
+  	<div class="field">
+            {% if form.LastName.errors %}
+            	<label style="color: red;">Last Name</label>	  
+	   {% else %}
+		<label style="color: black;">Last Name</label> 	
+	   {% endif %}
+            {{ form.LastName }}
+        </div>
+ 
+        <div class="field">
+            {% if form.Email.errors %}
+          	 <label style="color: red;">Email</label>
+ 	   {% else %}
+		 <label style="color: black;" , for="id_email">Email</label>
+	   {% endif %}
+            {{ form.Email }}
+        </div>
+
+        <div class="field">
+		 <label style="color: black;" , for="id_email">Country</label>
+		{{ form.Country }}
+	</div>
+
+	 <div class="field">
+            {% if form.Adress.errors %}
+            	<label style="color: red;">Adress</label>	  
+	   {% else %}
+		<label style="color: black;">Adress</label> 	
+	   {% endif %}
+            {{ form.Adress }}
+        </div>
+
+	<div class="field">
+            {% if form.Index.errors %}
+            	<label style="color: red;">Index</label>	  
+	   {% else %}
+		<label style="color: black;">Index</label> 	
+	   {% endif %}
+            {{ form.Index }}
+        </div>
+
+
+        </div>
+	<div class="field">
+	   {% if form.captcha.errors %}
+          	 <label style="color: red;" , for="id_email">Code in the image:</label>
+ 	   {% else %}
+		 <label style="color: black;" , for="id_email">Code in the image:</label>
+	   {% endif %}
+            {{ form.captcha }} 
+	</div>
+  </fieldset>
+        <input id="submit" type="submit" value="Submit">
+    </form>
+</body>
+</html>

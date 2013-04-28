@@ -11,8 +11,10 @@ from django.db import models
 
 class Post ( models.Model ):
 
-	image_url = models.CharField( max_length=200 )
-	renew = models.DateTimeField( 'date of renewal' )
+	post_title = models.CharField( max_length=35 )
+    	renew = models.DateTimeField( 'date of renewal' )
+   	image_url = models.CharField( max_length=200 )
+    	post_url = models.CharField( max_length=200 )
 
 
 
@@ -50,3 +52,21 @@ class Admin ( models.Model ):
 	login = models.CharField( max_length=200 )
 	hashpass = models.CharField( max_length=200 )
 	renew = models.DateTimeField( 'date of total renewal' )
+
+class Author( models.Model ):
+
+	photo_url = models.CharField( max_length=200 )
+	information = models.TextField(max_length=10000)
+	email = models.EmailField()
+
+class Message( models.Model ):
+
+	email = models.EmailField( max_length=200 )
+	subject = models.CharField( max_length=200)
+	information = models.TextField(max_length=10000)
+ 
+class Price ( models.Model ):
+	price = models.PositiveSmallIntegerField(max_length=4, default=0)
+	size = models.PositiveSmallIntegerField( max_length=10, default=10 )
+ 	on = models.PositiveSmallIntegerField( max_length=10, default=10 )
+	 	

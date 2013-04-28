@@ -1,0 +1,44 @@
+img 
+{
+	float: left;
+}
+
+#wrapper
+{
+	margin: auto;
+	width:70%;
+	height: 90%;
+	border:1px solid black;
+	border-radius: 10px;
+	padding-bottom: 3px;
+}
+#logo
+{
+	margin-left: 8px;
+	margin-top: 3px;
+	float: left;
+	width: 19%;
+	height:10%;
+}
+#menu
+{
+	float: left;
+	width: 79%;
+	height:10%;
+}
+.menu_item
+{
+	float: left;
+	padding-left: 10px;
+	padding-top: 10px;
+	width: 30%;
+	height:auto;
+}
+#footer
+{
+	
+	padding:auto;
+	width:70%;
+	margin: auto;
+	text-align: center;
+}

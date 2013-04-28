@@ -60,6 +60,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -85,6 +86,7 @@ INSTALLED_APPS = (
     #'django.contrib.admindocs',
     'frontend',
     'captcha',
+    'django.contrib.flatpages',
 )
 
 # A sample logging configuration. The only tangible logging
@@ -121,7 +123,7 @@ DEFAULT_FROM_EMAIL = 'kovalenko.stasiya@gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'kovalenko.stasiya@gmail.com'
-EMAIL_HOST_PASSWORD = 'PASSWORD'
+EMAIL_HOST_PASSWORD = 'wramt0504178165'
 EMAIL_PORT = 587
 
 #EMAIL_HOST = 'localhost'
