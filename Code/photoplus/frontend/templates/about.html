@@ -1,74 +1,24 @@
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel='icon' href="/static/frontend/img/pcam-ico.png" type='image/x-icon'>
-		<title>Vashchenko.com</title>
-		<link type="text/css" href="/static/frontend/css/main.css" rel="stylesheet">
-		<link media="screen" href="/static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet">
-	</head>
-	<body>
-		<div class="container">
-			<div class="navbar">
-				<div class="navbar-inner">
-					<a class="brand" title="Vashchenko photo bucket" href="/"><img src="/static/frontend/img/logo.png" /></a>
-
-					<ul class="nav">
-						<div class="span1"></div>
-						<li ><a href="/">HOME</a></li>
-						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GALLERY</a>
-							<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                                {% for e in album_list %}
-									<li>
-										<a tabindex="-1" href="/albums/{{e.name}}">{{e.name}}</a>
-									</li>
-                                {% endfor %}
-							</ul>
-                        </li>
-                        <li class="active"><a href="/about/">ABOUT</a></li>
-                   </ul>
-                </div>
-            </div>
-            
-			<div id="content">
-				<div id="description">
-					
-					<h4>About Me</h4>
-					 <img src="{{ about.photo_url }}" class="float-right"/>
+{% extends "header.html" %}
+{% block page %}
+	{% block content %}           
+		<div class="container" id="content">
+			<div id="description">
+				<legend>					
+					<h2>About Me</h2>
+				</legend>
+					 <img src="{{ about.photo_url }}" WIDTH="300" class = "shadow" style="float:right;  margin-left: 20px;"/>
 					<p> {{ about.information }} </p>
+					<legend></legend>
 					<br>
-				
-					<br>
-					<br>
-
+					
 					<div class="stop-div"></div>
 				</div>
 				<div id="contact">
 					<h4>Contact Me</h4>
 					<a href="/about/feedback"><h5>LEAVE FEEDBACK</h5></a>
+					<br>
 				</div>
 			</div>
 			
-			<div id="blank-footer"></div>
-			<div id="footer">
-				<hr />
-				<span class="muted">Yuri Vashchenko. All rights reserved</span>
-			</div>
-		</div>
-		<script>
-			$('.nav').children('.dropdown').hover(
-			function(){
-			$(this).addClass('open');
-			},
-			function(){
-			$(this).removeClass('open');
-			});
-		</script>
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src="/static/frontend/css/bootstrap/js/bootstrap.js"></script>
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src="js/bootstrap.js"></script>
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src="bootstrap/js/bootstrap.min.js"></script>
-	</body>
-</html>
+	{% endblock %}
+{% endblock %}

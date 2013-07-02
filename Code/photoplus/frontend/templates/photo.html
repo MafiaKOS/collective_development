@@ -84,7 +84,7 @@
 								</form>
 							</td>
 							<td>
-								<button id="buyButton" type="submit" class="btn">Buy photo</button>
+								<button id="buyButton" type="submit" class="btn">Order print</button>
 							</td>
 						</tr>
 					</tbody>
@@ -99,7 +99,7 @@
 		</div>
 		<script>
 			function buy_try() { 
-				document.location.href = 'http://vashchenko.local/buy/' + {{ photo.id }} + '/' + $('input[name="priceRadios"]:checked').val() + '/';
+				document.location.href = '/buy/' + {{ photo.id }} + '/' + $('input[name="priceRadios"]:checked').val() + '/';
 			}
 			document.getElementById("buyButton").onclick = buy_try;
 		</script>

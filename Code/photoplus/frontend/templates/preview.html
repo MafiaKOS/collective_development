@@ -1,89 +1,36 @@
-<!DOCTYPE HTML>
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<link rel='icon' href="/static/frontend/img/pcam-ico.png" type='image/x-icon'>
-		<title>Vashchenko.com</title>
-		<link type="text/css" href="/static/frontend/css/main.css" rel="stylesheet">
-		<link media="screen" href="/static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet">
-	</head>
-	<body>
-		<div class="container">
-			<div class="navbar">
-                <div class="navbar-inner">
-                   <a class="brand" title="Vashchenko photo bucket" href="/"><img src="/static/frontend/img/logo.png" /></a>
-                   
-                   <ul class="nav">
-                        <div class="span1"></div>
-                        <li><a href="/">HOME</a></li>
-                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GALLERY</a>
-                        	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-								{% for e in album_list %}
-									<li>
-										<a tabindex="-1" href="/albums/{{e.name}}">{{e.name}}</a>
-									</li>
-                                {% endfor %}
-							</ul>
-                        </li>
-                        <li><a href="/about/">ABOUT</a></li>
-                   </ul>
-                </div>
-            </div>
-            
-			<div id="content">
-			    <table id="table-photo">
-					<thead>
-						<tr>
-							<th class="text-shadow text-left v22">{{ photo.post_title }}</th>
-							<th class="text-shadow text-right v22">{{ photo.renew }}</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td id="photo-img" colspan=2>
-								<a href="{{ photo.post_url }}"><img title="CLICK TO GO TO POST PAGE" src="{{ photo.image_url }}" /></a>
-							</td>
-						</tr>
-						<tr>
-							<td></td>
-							<td id="photo-comment" class="text-right muted v7"><a href="{{ photo.post_url }}">CLICK HERE TO LEAVE COMMENT</a></td>
-						</tr>
-						<tr>
-							<td id="photo-price">
-								<form>
-									<table>
-									{% for e in prices %}
-										<tr>
-											<td><input type="radio" name="priceRadios" id="priceRadios{{ forloop.counter }}" value="{{ e.id }}"
-									{% if forloop.first %} checked{% endif %} /></td><td class="span1"></td>
-											<td class="text-right">{{ e.size }}*{{e.on}}</td><td class="span1"></td>
-											<td class="text-right">{{ e.price }}$</td>
-										</tr>
-									{% endfor %}
-									</table>
-								</form>
-							</td>
-							<td>
-								<button id="buyButton" type="submit" class="btn">Buy photo</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-
-			<div id="blank-footer"></div>
-			<div id="footer">
-				<hr />
-				<span class="muted">Yuri Vashchenko. All rights reserved</span>
-			</div>
-		</div>
-		<script>
+{% extends "header.html" %}
+{% block page %}
+	{% block content %} 
+<div id="content"> 
+	
+<legend>
+        <table WIDTH=100%>
+		<tr>
+			<td><h2 align="left">{{ photo.post_title }}</h2></td>
+			<td><h6 align="right">{{ photo.renew }}</h6></td>
+		<tr>
+	</table>
+</legend>
+	
+	<a href="{{ photo.post_url }}" target="_blank"><img WIDTH="1024" style="margin-top: 20px; margin-bottom: 20px;"  class="shadow" title="CLICK TO GO TO POST PAGE" src="{{ photo.image_url }}"/></a>
+	<a href="{{ photo.post_url }}" target="_blank">CLICK HERE TO LEAVE COMMENT</a>
+	<br><br>
+	<form>
+	{% for e in prices %}
+		<label class="radio">
+		<input type="radio" name="priceRadios" id="priceRadios{{ forloop.counter }}" value="{{ e.id }}"
+		{% if forloop.first %} checked{% endif %} />
+		{{ e.size }}*{{e.on}}
+		{{ e.price }}$
+		</label>
+	{% endfor %}
+	</form>
+	<button id="buyButton" type="submit" class="btn">Order print</button>
+	<script>
 			function buy_try() { 
-				document.location.href = 'http://loc.vashchenko.com/buy/' + {{ photo.id }} + '/' + $('input[name="priceRadios"]:checked').val() + '/';
+				document.location.href = '/buy/' + {{ photo.id }} + '/' + $('input[name="priceRadios"]:checked').val() + '/';
 			}
 			document.getElementById("buyButton").onclick = buy_try;
-		</script>
-		<script src="http://code.jquery.com/jquery-latest.js"></script>
-		<script src="/static/frontend/css/bootstrap/js/bootstrap.min.js"></script>
-	</body>
-</html>
+	</script>
+	{% endblock %}
+{% endblock %}

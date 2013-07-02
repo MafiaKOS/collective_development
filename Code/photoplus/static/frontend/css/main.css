@@ -31,11 +31,12 @@ body {
 }
 #buyButton {
 	left: 130px !important;
-    position: relative !important;
-    font-weight: bold;
+    	position: relative !important;
+    	font-weight: bold;
 }
+
 #header {
-	background-color: #E2E2E2;
+	
 	width: 100%;
 	margin-top: 10px;
 	margin-bottom: 18px;
@@ -147,3 +148,5 @@ img.shadow {
 .photo-date {
 	float: right;
 }
+table{
+text-align: center}

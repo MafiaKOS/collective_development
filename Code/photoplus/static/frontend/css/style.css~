@@ -8,8 +8,6 @@ img
 	margin: auto;
 	width:70%;
 	height: 90%;
-	border:1px solid black;
-	border-radius: 10px;
 	padding-bottom: 3px;
 }
 #logo
@@ -41,4 +39,16 @@ img
 	width:70%;
 	margin: auto;
 	text-align: center;
+}
+
+td
+{
+    padding: 10px; 
+}
+body{
+font-family: 'Helvetica', arial, sans-serif;
+line-height: 1.6em;
+font-weight: normal;
+font-style: normal;
+font-size: 12px;
 }

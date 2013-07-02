@@ -1,0 +1,57 @@
+{% extends "header.html" %}
+{% block page %}
+	{% block content %}              
+			<div id="content">
+				 <fieldset>
+				 <legend>
+					 <h2>Selected order</h2>
+				 </legend>
+
+ {% for e in ordersall %}
+					   {% if e.id =  orderlast.id %}
+						<p>Your last order: {{e.id}}</p>
+						<p>Name:            {{e.name}}</p>
+						<p>Adress: 	    {{e.adress}}</p>
+						<p>Photo url:       <a href="{{e.photo_id}}">{{e.photo_id}}</a></p>
+						<p>Price:           {{e.price}} </p>
+						<p>Size:            {{e.size}}</p>
+						<p>Status:          {{e.status}}</p>
+					   {% endif %}
+                                {% endfor %}
+
+<br>
+<br>
+
+<h3>All orders:</h3>
+<table width="550"  align="center" padding="7" border="2">
+	<thead>
+		<tr>
+			<td>Order Id</td>
+			<td>First name, last name</td>
+			<td>Adress</td>
+			<td>Photo</td>
+			<td>Price</td>
+			<td>Size</td>
+			<td>Status</td>
+		</tr>
+	</thead>
+
+	<tbody>
+	{% for e in ordersall %}
+		<tr>	
+			<td>{{e.id}}</td>
+			<td>{{e.name}}</td>
+			<td>{{e.adress}}</td>
+			<td><a href="{{e.photo_id}}">{{e.photo_id}}</a></td>
+			<td>{{e.price}}</td>
+			<td>{{e.size}}</td>
+			<td>{{e.status}}</td>
+		<tr>			
+	 {% endfor %}
+	</tbody>
+</table>
+
+				
+			 </div>
+{% endblock %}
+{% endblock %}

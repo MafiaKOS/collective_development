@@ -29,7 +29,8 @@ USE_TZ = True
 
 
 MEDIA_ROOT = ''
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
+ADMIN_MEDIA_PREFIX = '/media/admin/'
 STATIC_ROOT = ''
 STATIC_URL = '/static/'
 
@@ -37,6 +38,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+   
 )
 
 STATICFILES_FINDERS = (
@@ -72,6 +74,8 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    '/srv/www/photoplus/templates'
+    '/srv/www/photoplus/frontend/templates'
 )
 
 INSTALLED_APPS = (

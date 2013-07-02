@@ -1,0 +1,57 @@
+{% extends "header.html" %}
+{% block page %}
+	{% block content %}            
+			<div id="content">
+				<legend>
+					<h2 class="category">ALBUM: {% load cut %}{{album.name|cut:"_"}}{% if photos %}({{ nf }} to {{ nl }}) {% endif %}</h2>
+				</legend>
+				{% if photos %}
+				<div class="photos">
+					{% for e in photos %}
+			    	<div class="photo">
+			    		<a href="/preview/{{ e.id }}">
+			    		<img class="shadow" src="{{ e.image_url }}" />
+			    		</a>
+			    		<a href="{{ e.post_url }}" target="_blank"><h4 class="photo-name">{{ e.post_title }}</h4> 
+			    		<h5 class="photo-date">{{ e.renew }}</h5></a>
+					<br>
+			    	</div>
+					{% endfor %}
+			    </div>
+				{% else %}
+					<h5 class="category">There is no photo!</h5>
+				{% endif %}
+				<div class="stop-div"></div>
+			    <div class="pagination pagination-centered">
+			    	<ul>
+						{% if paginator.has_previous %}
+						<li><a href="/albums/{{ album.name }}/{{ paginator.previous }}/">&lt; Prev</a></li>
+						{% else %}
+						<li class="disabled"><a>&lt; Prev</a></li>
+						{% endif %}
+						{% if paginator.show_first %}
+						<li><a href="/albums/{{ album.name }}/1/">1</a></li>
+						<li class="disabled"><a>...</a></li>
+						{% endif %}
+						{% for linkpage in paginator.page_numbers %}
+                            {% ifequal linkpage paginator.page %}
+							<li class="active"><a>{{ paginator.page }}</a></li>
+							{% else %}
+							<li><a href="/albums/{{ album.name }}/{{ linkpage }}/">{{ linkpage }}</a></li>
+							{% endifequal %}
+						{% endfor %}
+						{% if paginator.show_last %}
+                        <li class="disabled"><a>...</a></li>
+						<li><a href="/albums/{{ album.name }}/{{ paginator.pages }}/">{{ paginator.pages }}</a></li>
+                        {% endif %}
+						{% if paginator.has_next %}
+						<li><a href="/albums/{{ album.name }}/{{ paginator.next }}/">Next &gt;</a></li>
+						{% else %}
+						<li class="disabled"><a>Next &gt;</a></li>
+						{% endif %}
+					</ul>
+				</div>
+			</div>
+
+	{% endblock %}
+{% endblock %}

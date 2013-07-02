@@ -4,17 +4,21 @@ from captcha.fields import CaptchaField
 class buyForm(forms.Form):
     FirstName = forms.CharField(
    	max_length=70,
-        label='First Name')
+        label='First Name',
+	required = True)
     LastName = forms.CharField(
    	max_length=70,
-        label='Last Name')
+        label='Last Name',
+	required = True)
     Email = forms.EmailField(
 	min_length=4,
         label='Your e-mail address',
-        help_text='We will send your order confirmation here',
+	required = True,
+        help_text='We will send your order confirmation here'
             )
     Country = forms.ChoiceField(
         label='Country',
+	required = True,
  	choices=(
 	('Abkhazia', 'Abkhazia'),
     	('Australia', 'Australia'),
@@ -93,35 +97,54 @@ class buyForm(forms.Form):
 	 ('ur', 'Urdu'),
 	    ),
             )
-    Adress = forms.CharField(
+    Address1 = forms.CharField(
    	max_length=70,
-        label='Adress')
+        label='Address1')
+
+    Address2 = forms.CharField(
+   	max_length=70,
+	required = False,
+        label='Address2')
+
+    City = forms.CharField(
+   	max_length=70,
+	required = True,
+        label='City')
+
+    State = forms.CharField(
+   	max_length=70,
+	required = True,
+        label='State')
 
     Index = forms.CharField(
    	max_length=6,
-        label='Index')
+        label='Zip code',
+	required = True)
 
     captcha = CaptchaField(
-            label= ("Captcha:")
+        label= ("Captcha")
             )
 
 
 class ReCaptchaForm(forms.Form):
     subject = forms.CharField(
    	    max_length=70,
+	    required = True,
             label='Your subject')
     email = forms.EmailField(
 	    min_length=4,
+	    required = True,
             label='Your e-mail address',
             #required=False,
             )
     message = forms.CharField(
 	    max_length=1000,
 	    min_length=0,
+	    required = True,
             label='Your message',
 	    widget=forms.Textarea)
     captcha = CaptchaField(
-            label= ("Captcha:")
+            label= ("Captcha")
             )
 
 def clean_message(self):
