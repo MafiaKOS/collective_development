@@ -1,0 +1,24 @@
+{% extends "header.html" %}
+{% block page %}
+	{% block content %}           
+		<div class="container" id="content">
+			<div id="description">
+				<legend>					
+					<h2>About Me</h2>
+				</legend>
+					 <img src="{{ about.photo_url }}" WIDTH="200" class = "shadow" style="float:right;  margin-left: 20px;"/>
+					<p> {{ about.information }} </p>
+					<legend></legend>
+					<br>
+					
+					<div class="stop-div"></div>
+				</div>
+				<div id="contact">
+					<h4>Contact Me</h4>
+					<a href="/about/feedback"><h5>LEAVE FEEDBACK</h5></a>
+					<br>
+				</div>
+			</div>
+			
+	{% endblock %}
+{% endblock %}

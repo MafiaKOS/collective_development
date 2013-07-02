@@ -21,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^captcha/', include('captcha.urls')),
     
     url(r'^about/$', about),
+    url(r'^order/(?P<idOrder>\d+)/$', order),
     
     url(r'^albums/(?P<idA>\w+)/$', album),
     url(r'^albums/(?P<idA>\w+)/(?P<page>\d+)/$', album),

@@ -1,0 +1,150 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family:Europe_Ext;
+}
+html {height: 100%;}
+* html body {height: 100%;}
+body {
+    background: -moz-linear-gradient(left, white 80%, gray 100%); /* FF 3.6+ */  
+    background: -ms-linear-gradient(left, white 80%, gray 100%); /* IE10 */  
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #000000), color-stop(100%, #ffffff)); /* Safari 4+, Chrome 2+ */  
+    background: -webkit-linear-gradient(left, white 80%, gray 100%); /* Safari 5.1+, Chrome 10+ */  
+    background: -o-linear-gradient(left, white 80%, gray 100%); /* Opera 11.10 */  
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#000000'); /* IE6 & IE7 */  
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#000000')"; /* IE8+ */  
+    background: linear-gradient(left, white 80%, gray 100%); /* the standard */  
+    min-height: 100%;
+    position: relative;
+	margin:0px;
+}
+.brand img {
+	width: 200px;
+}
+.container {
+	width: 750px !important;
+}
+.stop-div {
+	height: 1px;
+	overflow: hidden;
+	clear: both;	
+}
+#buyButton {
+	left: 130px !important;
+    	position: relative !important;
+    	font-weight: bold;
+}
+
+#header {
+	
+	width: 100%;
+	margin-top: 10px;
+	margin-bottom: 18px;
+}
+#logo img {
+	width: 200px;
+}
+ul.nav {
+	margin-top: 38px !important;
+}
+img.float-right {
+	width: 40%;
+	float: right;
+}
+.asterisk {
+	color: black;
+}
+.form-horizontal legend {
+	color: #747474;
+}
+.form-horizontal label {
+	color: #A0A0A0;
+}
+.v22 {
+	font-size: 22px;
+}
+.v7 {
+	font-size: 7px;
+}
+.text-shadow {
+	text-shadow: 1px 1px 2px black;
+}
+.navbar {
+	margin-bottom: 5px !important;
+}
+.category {
+	margin: 0 auto 20px;
+	width: 80%;
+}
+.shadow {
+	-moz-box-shadow: -10px -10px 10px rgba(0,0,0,0.5); /* Для Firefox */
+    -webkit-box-shadow: -10px -10px 10px rgba(0,0,0,0.5); /* Для Safari и Chrome */
+    box-shadow: -10px -10px 10px rgba(0,0,0,0.5); /* Параметры тени */
+    padding: 10px;
+}
+img.shadow {
+	-moz-box-shadow: -10px -10px 10px rgba(0,0,0,0.5); /* Для Firefox */
+    -webkit-box-shadow: -10px -10px 10px rgba(0,0,0,0.5); /* Для Safari и Chrome */
+    box-shadow: -10px -10px 10px rgba(0,0,0,0.5); /* Параметры тени */
+    padding: 0;
+}
+#photo-text {
+	vertical-align: top;
+}
+#photo-img {
+	width: 60%;
+}
+#photo-img img {
+	width: 100%;
+}
+#contact {
+	width: 100%;
+}
+.credit {
+	margin: 20px 0;
+}
+#blank-footer {
+	max-height: 60px;
+	height: 60px;
+}
+#footer {
+	width: inherit;
+	position: absolute;
+	bottom: 0;
+	max-height: 60px;
+	height: 60px;
+}
+#footer hr {
+	-moz-border-bottom-colors:#E2E2E2;
+	margin: 0;
+}
+#footer span {
+	display: block;
+	margin-top: 20px;
+	font-family: arial;
+	font-size: 14px;
+	font-weight: bold;
+	text-align:center;
+}
+.dropdown-menu {
+	filter:progid:DXImageTransform.Microsoft.Alpha(opacity=95); /* IE 5.5+*/
+	-moz-opacity: 0.95; /* Mozilla 1.6 и ниже */
+	-khtml-opacity: 0.95; /* Konqueror 3.1, Safari 1.1 */
+	opacity: 0.95; /* CSS3 - Mozilla 1.7b +, Firefox 0.9 +, Safari 1.2+, Opera 9 */
+}
+.photos {
+	width: 100%;
+}
+.photo {
+	margin: 0 auto 60px;
+	width: 80%;
+}
+.photo img {
+	width: 100%;
+}
+.photo-name {
+	float: left;
+}
+.photo-date {
+	float: right;
+}

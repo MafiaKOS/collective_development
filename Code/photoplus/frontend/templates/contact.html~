@@ -1,0 +1,94 @@
+{% extends "header.html" %}
+{% block page %}
+	{% block content %}  
+<link type="text/css" href="/static/frontend/css/main.css" rel="stylesheet">
+<link media="screen" href="/static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet">
+			<div id="content">     
+  <fieldset>
+ 
+         <legend>
+		<h2>Leave feedback</h2>
+	</legend>
+ 
+
+    <form class="form-horizontal" action="" method="post">
+        <div >
+            {% if form.subject.errors %}
+            	<div class="control-group error">
+  			<label class="control-label" for="inputError">Subject</label>
+  			<div class="controls">
+    			{{ form.subject }}
+    			<span class="help-inline">*</span>
+  			</div>	  
+	   {% else %}
+		 <div class="control-group success">
+			  <label class="control-label" for="inputSuccess">Subject</label>
+			  <div class="controls">
+			    {{ form.subject }}
+			    <span class="help-inline">*</span>
+			  </div>
+		</div>
+	   {% endif %}
+        </div>
+ 	<div >
+            {% if form.email.errors %}
+            	<div class="control-group error">
+  			<label class="control-label" for="inputError">Email</label>
+  			<div class="controls">
+    			 {{ form.email }}
+			<span class="help-inline">*</span>
+  			</div>	  
+	   {% else %}
+		 <div class="control-group success">
+			  <label class="control-label" for="inputSuccess">Email</label>
+			  <div class="controls">
+			    {{ form.email }}
+			    <span class="help-inline">*</span>
+			  </div>
+		</div>
+	   {% endif %}
+        </div>
+	<div >
+            {% if form.message.errors %}
+            	<div class="control-group error">
+  			<label class="control-label" for="inputError">Message</label>
+  			<div class="controls">
+    			{{ form.message }}
+			<span class="help-inline">*</span>
+  			</div>	  
+	   {% else %}
+		 <div class="control-group success">
+			  <label class="control-label" for="inputSuccess">Message</label>
+			  <div class="controls">
+			    {{ form.message }}
+			   <span class="help-inline">*</span>
+			  </div>
+		</div>
+	   {% endif %}
+        </div>
+	<div >
+            {% if form.captcha.errors %}
+            	<div class="control-group error">
+  			<label class="control-label" for="inputError">Code in the image</label>
+  			<div class="controls">
+    			{{ form.captcha }}
+  			</div>	  
+	   {% else %}
+		 <div class="control-group success">
+			  <label class="control-label" for="inputSuccess">Code in the image</label>
+			  <div class="controls">
+			    {{ form.captcha }}
+			  </div>
+		</div>
+	   {% endif %}
+        </div>
+        
+  
+        	 <div class="controls">
+			<input class="btn" id="submit" type="submit" value="Submit">
+		</div>
+    </form>
+   </div>
+</fieldset>
+	{% endblock %}
+{% endblock %}

@@ -1,59 +1,92 @@
-<!DOCTYPE html>
-<html lang="ru">
-	<head>
-        <meta charset="utf-8">
-		<link rel='icon' href="/static/frontend/img/i.png" type='image/x-icon'> 
-		<title>Vashchenko.com</title>
-		<link type="text/css" href="/static/frontend/css/main.css" rel="stylesheet">
-		<link href="/static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" >
-		<link href="/static/frontend/css/style.css" rel="stylesheet" type="text/css" >
-	        <title>Contact us</title>
-
-	</head>
-
-<body>
- 
+{% extends "header.html" %}
+{% block page %}
+	{% block content %}  
+<div id="content">     
   <fieldset>
- <legend>
-         <h2>Leave feedback</h2>
- </legend>
-
-    <form action="" method="post">
-        <div class="field">
-            {% if form.subject.errors %}
-            	<label style="color: red;", for="id_subject">Subject:</label>	  
-	   {% else %}
-		<label style="color: black;", for="id_subject">Subject:</label> 	
-	   {% endif %}
-            {{ form.subject }}
-        </div>
  
-        <div class="field">
+         <legend>
+		<h2>Leave feedback</h2>
+	</legend>
+ 
+
+    <form class="form-horizontal" action="" method="post">
+        <div >
+            {% if form.subject.errors %}
+            	<div class="control-group error">
+  			<label class="control-label" for="inputError">Subject</label>
+  			<div class="controls">
+    			{{ form.subject }}
+    			<span class="help-inline">*</span>
+  			</div>	  
+	   {% else %}
+		 <div class="control-group success">
+			  <label class="control-label" for="inputSuccess">Subject</label>
+			  <div class="controls">
+			    {{ form.subject }}
+			    <span class="help-inline">*</span>
+			  </div>
+		</div>
+	   {% endif %}
+        </div>
+ 	<div >
             {% if form.email.errors %}
-          	 <label style="color: red;" , for="id_email">Your e-mail:</label>
- 	   {% else %}
-		 <label style="color: black;" , for="id_email">Your e-mail:</label>
+            	<div class="control-group error">
+  			<label class="control-label" for="inputError">Email</label>
+  			<div class="controls">
+    			 {{ form.email }}
+			<span class="help-inline">*</span>
+  			</div>	  
+	   {% else %}
+		 <div class="control-group success">
+			  <label class="control-label" for="inputSuccess">Email</label>
+			  <div class="controls">
+			    {{ form.email }}
+			    <span class="help-inline">*</span>
+			  </div>
+		</div>
 	   {% endif %}
-            {{ form.email }}
         </div>
-        <div class="field">
+	<div >
             {% if form.message.errors %}
-                 <label style="color: red;" , for="id_message">Message:</label>
-	    {% else %}
-		 <label style="color: black;" , for="id_message">Message:</label>
+            	<div class="control-group error">
+  			<label class="control-label" for="inputError">Message</label>
+  			<div class="controls">
+    			{{ form.message }}
+			<span class="help-inline">*</span>
+  			</div>	  
+	   {% else %}
+		 <div class="control-group success">
+			  <label class="control-label" for="inputSuccess">Message</label>
+			  <div class="controls">
+			    {{ form.message }}
+			   <span class="help-inline">*</span>
+			  </div>
+		</div>
 	   {% endif %}
-            {{ form.message }}
         </div>
-	<div class="field">
-	   {% if form.captcha.errors %}
-          	 <label style="color: red;" , for="id_email">Code in the image:</label>
- 	   {% else %}
-		 <label style="color: black;" , for="id_email">Code in the image:</label>
+	<div >
+            {% if form.captcha.errors %}
+            	<div class="control-group error">
+  			<label class="control-label" for="inputError">Code in the image</label>
+  			<div class="controls">
+    			{{ form.captcha }}
+  			</div>	  
+	   {% else %}
+		 <div class="control-group success">
+			  <label class="control-label" for="inputSuccess">Code in the image</label>
+			  <div class="controls">
+			    {{ form.captcha }}
+			  </div>
+		</div>
 	   {% endif %}
-            {{ form.captcha }} 
-	</div>
-  </fieldset>
-        <input id="submit" type="submit" value="Submit">
+        </div>
+        
+  
+        	 <div class="controls">
+			<input class="btn" id="submit" type="submit" value="Submit">
+		</div>
     </form>
-</body>
-</html>
+   </div>
+</fieldset>
+	{% endblock %}
+{% endblock %}

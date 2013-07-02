@@ -1,87 +1,150 @@
-<!DOCTYPE html>
-<html lang="ru">
-	<head>
-        <meta charset="utf-8">
-		<link rel='icon' href="/static/frontend/img/i.png" type='image/x-icon'> 
-		<title>Vashchenko.com</title>
-		<link type="text/css" href="/static/frontend/css/main.css" rel="stylesheet">
-		<link href="/static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet" media="screen" >
-		<link href="/static/frontend/css/style.css" rel="stylesheet" type="text/css" >
-	        <title>Contact us</title>
+{% extends "header.html" %}
+{% block page %}
+	{% block content %}       
+<div id="content">
 
-	</head>
-
-<body>
  
   <fieldset>
  <legend>
-         <h2>photo купить</h2>
+         <h2>Order print</h2>
  </legend>
-
-   <p> {{ buy.message}} </p>
-
-    <form action="" method="post">
-        <div class="field">
+    <form class="form-horizontal" action="" method="post">  
             {% if form.FirstName.errors %}
-            	<label style="color: red;">First Name</label>	  
+		<div class="control-group error">
+		    	<label class="control-label" for="inputError">First Name</label>	 
+			<div class="controls">{{ form.FirstName }} <span class="help-inline">*</span></div>
+		</div>
 	   {% else %}
-		<label style="color: black;">First Name</label> 	
+		<div class="control-group success">
+			<label class="control-label" for="inputSuccess">First Name</label> 
+			<div class="controls">{{ form.FirstName }} <span class="help-inline">*</span></div>
+		</div>
 	   {% endif %}
-            {{ form.FirstName }}
-        </div>
-  	<div class="field">
+            
+        
+  	
             {% if form.LastName.errors %}
-            	<label style="color: red;">Last Name</label>	  
+		<div class="control-group error">
+		    	<label class="control-label" for="inputError">Last Name</label>
+			<div class="controls"> {{ form.LastName }} <span class="help-inline">*</span></div> 
+		</div>
 	   {% else %}
-		<label style="color: black;">Last Name</label> 	
+		<div class="control-group success">
+			<label class="control-label" for="inputSuccess">Last Name</label> 	
+			<div class="controls">{{ form.LastName }} <span class="help-inline">*</span></div>
+		</div>
 	   {% endif %}
-            {{ form.LastName }}
-        </div>
- 
-        <div class="field">
+      
+        
             {% if form.Email.errors %}
-          	 <label style="color: red;">Email</label>
+		<div class="control-group error">
+		  	<label class="control-label" for="inputError">Email</label>
+			<div class="controls">{{ form.Email }} <span class="help-inline">*  We will send your order confirmation here</span></div>
+		</div>
  	   {% else %}
-		 <label style="color: black;" , for="id_email">Email</label>
+		<div class="control-group success">
+			 <label class="control-label" for="inputSuccess">Email</label>
+			 <div class="controls">{{ form.Email }} <span class="help-inline">*  We will send your order confirmation here</span> </div>
+		</div>
 	   {% endif %}
-            {{ form.Email }}
-        </div>
+            
+      
 
-        <div class="field">
-		 <label style="color: black;" , for="id_email">Country</label>
-		{{ form.Country }}
+	
+            {% if form.Address1.errors %}
+		<div class="control-group error">
+		    	<label class="control-label" for="inputError">Street 1</label>
+			<div class="controls">{{ form.Address1 }} <span class="help-inline">*</span></div>	
+		</div>  
+	   {% else %}
+		<div class="control-group success">
+			<label class="control-label" for="inputSuccess">Street 1</label> 
+			<div class="controls">{{ form.Address1 }} <span class="help-inline">*</span>	</div>
+		</div>
+	   {% endif %}
+            
+        
+
+	
+            {% if form.Address2.errors %}
+		<div class="control-group error">
+		    	<label class="control-label" for="inputError">Street 2</label>	
+			<div class="controls">{{ form.Address2 }}</div>  
+		</div>
+	   {% else %}
+		<div class="control-group success">
+			<label class="control-label" for="inputSuccess">Street 2</label> 	
+			<div class="controls">{{ form.Address2 }}</div>
+		</div>
+	   {% endif %}    
+
+	
+            {% if form.City.errors %}
+	    	<div class="control-group error">
+		    	<label class="control-label" for="inputError">City</label>	
+			<div class="controls">{{ form.City }} <span class="help-inline">*</span> </div>
+		</div>
+	   {% else %}
+		<div class="control-group success">
+			<label class="control-label" for="inputSuccess">City</label> 	
+			<div class="controls">{{ form.City }} <span class="help-inline">*</span> </div>
+		</div>
+	   {% endif %}
+            
+	
+            {% if form.State.errors %}
+		<div class="control-group error">
+		    	<label class="control-label" for="inputError">State</label>	
+			<div class="controls">{{ form.State }} <span class="help-inline">*</span> </div>
+		</div>
+	   {% else %}
+		<div class="control-group success">
+			<label class="control-label" for="inputSuccess">State</label> 	
+			<div class="controls">{{ form.State }} <span class="help-inline">*</span> </div>
+		</div>
+	   {% endif %}
+            
+      
+	<div class="control-group success">
+		<label class="control-label" for="inputSuccess">Country</label>
+		<div class="controls">{{ form.Country }} </div>
 	</div>
 
-	 <div class="field">
-            {% if form.Adress.errors %}
-            	<label style="color: red;">Adress</label>	  
-	   {% else %}
-		<label style="color: black;">Adress</label> 	
-	   {% endif %}
-            {{ form.Adress }}
-        </div>
-
-	<div class="field">
+	
             {% if form.Index.errors %}
-            	<label style="color: red;">Index</label>	  
+		<div class="control-group error">
+		    	<label class="control-label" for="inputError">Zip code</label>	 
+			 <div class="controls">{{ form.Index }} <span class="help-inline">*</span> </div>
+		</div>
 	   {% else %}
-		<label style="color: black;">Index</label> 	
+		<div class="control-group success">
+			<label class="control-label" for="inputSuccess">Zip code</label> 
+			 <div class="controls">{{ form.Index }} <span class="help-inline">*</span> </div>	
+		</div>
 	   {% endif %}
-            {{ form.Index }}
-        </div>
+           
+       
 
 
-        </div>
-	<div class="field">
+
 	   {% if form.captcha.errors %}
-          	 <label style="color: red;" , for="id_email">Code in the image:</label>
+		<div class="control-group error">
+		  	<label class="control-label" for="inputError">Code in the image</label>
+			 <div class="controls">{{ form.captcha }}</div>
+		</div>
  	   {% else %}
-		 <label style="color: black;" , for="id_email">Code in the image:</label>
+		 <div class="control-group success">
+			 <label class="control-label" for="inputSuccess">Code in the image</label>
+			 <div class="controls">{{ form.captcha }}</div>
+		</div>
 	   {% endif %}
-            {{ form.captcha }} 
+             
+	
+	<div class="controls">
+        <input id="submit" class="btn" type="submit" value="Submit">
 	</div>
-  </fieldset>
-        <input id="submit" type="submit" value="Submit">
     </form>
-</body>
-</html>
+  </fieldset>
+ </div>       
+{% endblock %}
+	{% endblock %}

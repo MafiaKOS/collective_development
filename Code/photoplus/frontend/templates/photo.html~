@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel='icon' href="/static/frontend/img/pcam-ico.png" type='image/x-icon'>
+		<title>Vashchenko.com</title>
+		<link type="text/css" href="/static/frontend/css/main.css" rel="stylesheet">
+		<link media="screen" href="/static/frontend/css/bootstrap/css/bootstrap.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<div class="navbar">
+                <div class="navbar-inner">
+                   <a class="brand" title="Vashchenko photo bucket" href="/"><img src="/static/frontend/img/logo.png" /></a>
+                   
+                   <ul class="nav">
+                        <div class="span1"></div>
+                        <li><a href="/">HOME</a></li>
+                        <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">GALLERY</a>
+                        	<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+									<li>
+										<a tabindex="-1" href="/albums/">PEOPLE</a>
+									</li>
+									<li>
+										<a tabindex="-1" href="/albums/">CITY</a>
+									</li>
+									<li>
+										<a tabindex="-1" href="/albums/">NATURE</a>
+									</li>
+							</ul>
+                        </li>
+                        <li><a href="/about/">ABOUT</a></li>
+                   </ul>
+                </div>
+            </div>
+            
+			<div id="content">
+			    <table id="table-photo">
+					<thead>
+						<tr>
+							<th class="text-shadow text-left v22">{{ photo.id }}</th>
+							<th class="text-shadow text-right v22">{{ photo.renew }}</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td id="photo-text">Здесь описание или теги</td>
+							<td id="photo-img"><a href="{{ photo.post_url }}"><img src="{{ photo.image_url }}" /></a></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td id="photo-comment" class="text-right muted v7">LEAVE A COMMENT:  <a href="{{ photo.post_url }}">{{ photo.post_url }}</a></td>
+						</tr>
+						<tr>
+							<td id="photo-price">
+								<form>
+									<table>
+										<tr>
+											<td><input type="radio" name="priceRadios" id="priceRadios1" value="9X13" checked /></td><td class="span1"></td>
+											<td class="text-right">9 X 13</td><td class="span1"></td>
+											<td class="text-right">5$</td>
+										</tr>
+										<tr>
+											<td><input type="radio" name="priceRadios" id="priceRadios2" value="10X15" /></td><td></td>
+											<td class="text-right">10 X 15</td><td></td>
+											<td class="text-right">10$</td>
+										</tr>
+										<tr>
+											<td><input type="radio" name="priceRadios" id="priceRadios3" value="13X18" /></td><td></td>
+											<td class="text-right">13 X 18</td><td></td>
+											<td class="text-right">15$</td>
+										</tr>
+										<tr>
+											<td><input type="radio" name="priceRadios" id="priceRadios4" value="15X20" /></td><td></td>
+											<td class="text-right">15 X 20</td><td></td>
+											<td class="text-right">20$</td>
+										</tr>
+										<tr>
+											<td><input type="radio" name="priceRadios" id="priceRadios5" value="20X30" /></td><td></td>
+											<td class="text-right">20 X 30</td><td></td>
+											<td class="text-right">25$</td>
+										</tr>
+									</table>
+								</form>
+							</td>
+							<td>
+								<button id="buyButton" type="submit" class="btn">Buy photo</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<div id="blank-footer"></div>
+			<div id="footer">
+				<hr />
+				<span class="muted">Yuri Vashchenko. All rights reserved</span>
+			</div>
+		</div>
+		<script>
+			function buy_try() { 
+				document.location.href = '/buy/' + {{ photo.id }} + '/' + $('input[name="priceRadios"]:checked').val() + '/';
+			}
+			document.getElementById("buyButton").onclick = buy_try;
+		</script>
+		<script src="http://code.jquery.com/jquery-latest.js"></script>
+		<script src="/static/frontend/css/bootstrap/js/bootstrap.min.js"></script>
+	</body>
+</html>
