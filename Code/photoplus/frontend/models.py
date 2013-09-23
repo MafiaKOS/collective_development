@@ -88,4 +88,11 @@ class Order ( models.Model ):
 	price = models.PositiveSmallIntegerField(max_length=4, default=0)
 	size = models.CharField( max_length=22)
 	status = models.CharField(max_length=20,choices=Order_choices, default='RECEIVED')
+
+class BestPhoto (models.Model):
+    image_url = models.CharField( max_length = 400 )
+
+class LastUpdated (models.Model):
+    last_visit = models.DateTimeField()
+    album_update = models.CharField( max_length = 400 )
 	

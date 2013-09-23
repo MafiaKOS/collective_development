@@ -127,7 +127,7 @@ DEFAULT_FROM_EMAIL = 'kovalenko.stasiya@gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'kovalenko.stasiya@gmail.com'
-EMAIL_HOST_PASSWORD = 'wramt0511943926'
+EMAIL_HOST_PASSWORD = 'wramt0504178165'
 EMAIL_PORT = 587
 
 #EMAIL_HOST = 'localhost'

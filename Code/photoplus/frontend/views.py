@@ -17,11 +17,19 @@ from django.core.mail 	 import EmailMessage
 from django.conf 	 import settings
 from email.MIMEImage 	 import MIMEImage
 from django 		 import template
+from config             import ACCOUNT_EMAIL, ACCOUNT_PASSWORD, BEST_PHOTO_ALBUM
+import gdata.photos.service
+import gdata.media
+import gdata.geo
+import cgi
+import datetime
+
 
 
 import sys, traceback
 
 
+LAST_VISIT_TO_ACCOUNT = 0
 
 
 
@@ -261,6 +269,16 @@ def preview(request, idP ):
         raise Http404
     return render_to_response('preview.html',{ 'photo':photo , 'album':album, 'album_list':al, 'prices':prices })
 
+def preview_best(request, photoId):
+    try:
+        photoId = int(photoId)
+        photo = BestPhoto.objects.get( id = photoId )
+        al = Album.objects.all()
+        prices = Price.objects.all()
+    except Post.DoesNotExist:
+        raise Http404
+    return render_to_response('preview.html',{ 'photo':photo , 'album':album, 'album_list':al, 'prices':prices })  
+
 #--------------------------------------------------------------------------------------------------
 #                                      GET_PAGINATOR_DATA
 #--------------------------------------------------------------------------------------------------
@@ -376,18 +394,23 @@ def home_page( request, page ):
 
 def home( request ):
     refresh_db_with_new_data()
+    best_photo = get_best_photo()
     try:
         last = Post.objects.order_by('-renew')[0:10]
         al = Album.objects.all()
     except Post.DoesNotExist:
         raise Http404
+   # if len(best_photo) == 0:
+   #     raise Http404
     
     page = 1
     pages = int(ceil(Post.objects.count() / 10.0))
     paginator = get_paginator_data( page, pages , 2 )
     num_last = len(last)
-    
-    return render_to_response('index.html',{ 'last':last, 'best':last[:3], 'paginator':paginator, 'nl':num_last, 'nf':1, 'album_list':al })
+    #raise Exception, "url : %s" % best_photo[0]
+    return render_to_response('index.html',{ 'last':last, 'best_photo':best_photo,'best':last[:3], 'paginator':paginator, 'nl':num_last, 'nf':1, 'album_list':al })
+#'best_photo':best_photo,
+
 
 def change_albums_name(album_name):
     album_name.strip()
@@ -405,5 +428,89 @@ def order(request, idOrder):
         raise Http404
     return render_to_response('order.html',{ 'ordersall':ordersall , 'orderlast':orderlast, 'album_list':al })
 
+def get_best_photo():
+    now = datetime.datetime.now()
+    # retrive date time of last visit to account
+    
+    if len(LastUpdated.objects.all()) == 0:
+        last_update = LastUpdated(last_visit = now, album_update = "")
+        last_update.save()
+    
+    last_update = LastUpdated.objects.get(id=1)
+    local_last_visit = last_update.last_visit
+
+    
+    photos_from_db = []
+   
+    # get photos from db
+    for el in BestPhoto.objects.all():
+        photos_from_db.append( el.image_url )
+    
+    if len(photos_from_db) == 0 or abs(local_last_visit.hour - now.hour) >= 3 or abs(local_last_visit.day - now.day) >= 1:
+        # update last visit in db        
+        last_update.last_visit = now
+        last_update.save()
+        photos_from_db = update_best_photos()
+   
+    return photos_from_db
+    
+def update_best_photos():
+    gd_client = gdata.photos.service.PhotosService()
+    gd_client.email = ACCOUNT_EMAIL
+    gd_client.password = ACCOUNT_PASSWORD
+    gd_client.ProgrammaticLogin()
+    photos_from_account = []
+    photos_from_db=[]
+
+    # retrive datetime (type is string )of last visit to account
+    last_update = LastUpdated.objects.get(id=1)
+    local_album_update = last_update.album_update
+
+    update_date = 0 # best photos album's update time 
+    act_list = []
+    #last_update = 0 # best photos album's update time. It is taked from last photo info from db
+
+    # get photos from db
+   
+      
+    albums = gd_client.GetUserFeed()
+    
+    for el in BestPhoto.objects.all():
+        photos_from_db.append( el.image_url ) 
+
+    # get photos from account
+    for album in albums.entry:
+        if album.title.text == BEST_PHOTO_ALBUM:
+            # if album has updated
+            #raise Exception, "update.text: %s , album_update: %s" %(album.updated.text,local_album_update)
+            if album.updated.text != local_album_update:
+                #update the album_update value in db
+                last_update.album_update = album.updated.text
+                last_update.save()
+                
+                photos = gd_client.GetFeed('/data/feed/api/user/%s/albumid/%s?kind=photo' % ('default', album.gphoto_id.text)) 
+                #get all photos from account
+                for photo in photos.entry:
+                    photos_from_account.append(photo.content.src)
+                    #raise Exception, "src is %s" %len(photo.content.src)
+                for el in BestPhoto.objects.all():
+                    if el.image_url not in photos_from_account:
+                        el.delete() 
+  
+    # compaire photos from account and db: if the photo from account is absent indb, then the photo is added into db
+    for element in photos_from_account:
+        if element not in photos_from_db:
+            p = BestPhoto( image_url = element)
+            p.save()
+
+    photos_from_db = []
+
+   # raise Exception, "length db is %d" %len(BestPhoto.objects.all()) 
+    for el in BestPhoto.objects.all():
+       # photos_from_db.append( el.image_url )  
+	    photos_from_db.append( el ) 
+       # raise Exception, "url %s" % el.image_url
+    
+    return photos_from_db 
 
 

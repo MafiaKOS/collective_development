@@ -2,26 +2,22 @@
 {% block page %}
 	{% block content %}
 			<div id="content">
-				{% if best %}
+				{% if best_photo %}
 				<div id="BestPhotos" class="carousel slide">
-					<ol class="carousel-indicators">
-					{% for e in best %}
-						<li data-target="#BestPhotos" data-slide-to="{{ forloop.counter0 }}"{% if forloop.first %} class="active"{% endif %}></li>
-					{% endfor %}
-					</ol>
+
 					<!-- Carousel items -->
 					<div class="carousel-inner">
-					{% for e in best %}
-						<div class="{% if forloop.first %}active {% endif %}item"><a href="/preview/{{ e.id }}"><img height=1024 class="shadow best-photo" src="{{ e.image_url }}" /></a></div>
+					{% for e in best_photo %}
+						<div class="{% if forloop.first %}active {% endif %}item"><a href="/preview_best/{{ e.id }}"><img WIDTH=1020 style="margin-left: 10px; margin-top: 20px; margin-bottom: 20px;"  class="shadow" title="CLICK TO GO TO POST PAGE" class="shadow best-photo" src="{{ e.image_url }}" /></a></div>
 					{% endfor %}
 					</div>
 					<!-- Carousel nav -->
 					<a class="carousel-control left" href="#BestPhotos" data-slide="prev">&lsaquo;</a>
 					<a class="carousel-control right" href="#BestPhotos" data-slide="next">&rsaquo;</a>
-					<legend></legend>
 				</div>
-				<hr/>
+				<hr />
 				{% endif %}
+
 				<legend><h2 class="category">ALBUM: ALL {% if last %}({{ nf }} to {{ nl }}) {% endif %}</h2></legend>
 				{% if last %}
 				<div class="photos">

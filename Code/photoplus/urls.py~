@@ -13,7 +13,6 @@ urlpatterns = patterns('',
     url(r'^page/(?P<page>\d+)/$',home_page),
     
     url(r'^preview/(?P<idP>\d+)/$', preview),
-	url(r'^preview_best/(?P<photoId>\d+)/$', preview_best),
     url(r'^buy/(?P<idP>\d+)/(?P<resolution>\w+)/$', buy),
     
     url(r'^about/feedback/', contact),

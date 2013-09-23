@@ -2,17 +2,13 @@
 {% block page %}
 	{% block content %}
 			<div id="content">
-				{% if best %}
+				{% if best_photo %}
 				<div id="BestPhotos" class="carousel slide">
-					<ol class="carousel-indicators">
-					{% for e in best %}
-						<li data-target="#BestPhotos" data-slide-to="{{ forloop.counter0 }}"{% if forloop.first %} class="active"{% endif %}></li>
-					{% endfor %}
-					</ol>
+
 					<!-- Carousel items -->
 					<div class="carousel-inner">
-					{% for e in best %}
-						<div class="{% if forloop.first %}active {% endif %}item"><a href="/preview/{{ e.id }}"><img height=1024 class="shadow best-photo" src="{{ e.image_url }}" /></a></div>
+					{% for e in best_photo %}
+						<div class="{% if forloop.first %}active {% endif %}item"><a href="/preview_best/{{ e.id }}"><img WIDTH=1024 style="margin-left: 10px; margin-top: 20px; margin-bottom: 20px;"  class="shadow" title="CLICK TO GO TO POST PAGE" class="shadow best-photo" src="{{ e.image_url }}" /></a></div>
 					{% endfor %}
 					</div>
 					<!-- Carousel nav -->
@@ -21,7 +17,8 @@
 				</div>
 				<hr />
 				{% endif %}
-				<h3 class="category">ALBUM: ALL {% if last %}({{ nf }} to {{ nl }}) {% endif %}</h3>
+
+				<legend><h2 class="category">ALBUM: ALL {% if last %}({{ nf }} to {{ nl }}) {% endif %}</h2></legend>
 				{% if last %}
 				<div class="photos">
 					{% for e in last %}
@@ -31,6 +28,7 @@
 			    		</a>
 			    		<a href="{{ e.post_url }}" target="_blank"><h4 class="photo-name">{{ e.post_title }}</h4> 
 			    		<h5 class="photo-date">{{ e.renew }}</h5></a>
+					<br><br>
 			    	</div>
 					{% endfor %}
 			    </div>
